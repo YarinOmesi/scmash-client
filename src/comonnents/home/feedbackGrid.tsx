@@ -1,43 +1,31 @@
-import {Feedback, FeedbackProp} from '../feedback/feedback'
+import {Feedback} from '../feedback/feedback'
 import {Box, Grid} from "@mui/material";
-import {useState} from "react";
 import {Reaction} from "../../Reaction";
+import {FeedbackModel} from "../feedback/FeedbackModel";
 
-// TODO: this is not best solution
-export type FeedbackData = Omit<FeedbackProp, 'onReactionClicked' | 'currentReaction'>
 
 export type FeedbackGridProps = {
-    feedbacks: Array<FeedbackData>
+    feedbacks: Array<FeedbackModel>,
+    setFeedbackReaction: (newReaction: Reaction, feedback: FeedbackModel) => void
 }
 
-export function FeedbackStateful(props: FeedbackData) {
-    const [reaction, setReaction] = useState<Reaction | null>(null)
-    return (
-        <Feedback
-            content={props.content}
-            writerNickname={props.writerNickname}
-            subject={props.subject}
-            currentReaction={reaction}
-            onReactionClicked={new_reaction => {
-                setReaction(
-                    (new_reaction === reaction) ? null : new_reaction
-                )
-            }}
-        />
-    )
-}
 
 export function FeedbackGrid(props: FeedbackGridProps) {
+
     return (
         <Grid>
             {
                 props.feedbacks.map(feedback => {
                     return (
-                        <Box sx={{margin:1,display:'inline-block'}}>
-                            <FeedbackStateful
-                                content={feedback.content}
-                                writerNickname={feedback.writerNickname}
-                                subject={feedback.subject}
+                        <Box sx={{margin: 1, display: 'inline-block'}}>
+                            <Feedback
+                                feedbackModel={feedback}
+                                onReactionClicked={new_reaction => {
+                                    props.setFeedbackReaction(
+                                        (new_reaction === feedback.reaction) ? Reaction.NoReaction : new_reaction,
+                                        feedback
+                                    )
+                                }}
                             />
                         </Box>
                     )
