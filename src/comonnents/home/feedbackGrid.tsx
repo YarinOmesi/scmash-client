@@ -1,7 +1,7 @@
 import {Feedback} from '../feedback/feedback'
 import {Box, Grid} from "@mui/material";
-import {Reaction} from "../../Reaction";
-import {FeedbackModel} from "../feedback/FeedbackModel";
+import {Reaction} from "../../models/Reaction";
+import {FeedbackModel} from "../../models/FeedbackModel";
 
 
 export type FeedbackGridProps = {

@@ -1,8 +1,8 @@
-import {Reaction} from "../../Reaction";
+import {Reaction} from "../../models/Reaction";
 import {Card, CardActions, CardContent, IconButton, Typography} from "@mui/material";
 import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt'
 import ThumbDownIcon from '@mui/icons-material/ThumbDown'
-import {FeedbackModel} from "./FeedbackModel";
+import {FeedbackModel} from "../../models/FeedbackModel";
 
 export type FeedbackProp = {
     feedbackModel: FeedbackModel

@@ -1,4 +1,4 @@
-import {FeedbackModel} from "../feedback/FeedbackModel";
+import {FeedbackModel} from "../../models/FeedbackModel";
 import {Box} from "@mui/material";
 import {FeedbackGrid} from "./feedbackGrid";
 import {Feedbacks} from "../../feedbacks";

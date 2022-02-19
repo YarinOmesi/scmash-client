@@ -1,6 +1,6 @@
 import {Subject} from "./comonnents/home/home";
-import {FeedbackModel} from "./comonnents/feedback/FeedbackModel";
-import {Reaction} from "./Reaction";
+import {FeedbackModel} from "./models/FeedbackModel";
+import {Reaction} from "./models/Reaction";
 
 export namespace Feedbacks {
     type Listener = (subjects: Array<Subject>) => void

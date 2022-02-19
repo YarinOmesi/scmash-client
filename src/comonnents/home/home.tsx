@@ -1,7 +1,7 @@
 import {Box} from "@mui/material";
 import React, {useEffect, useState} from "react"
 import {Feedbacks} from "../../feedbacks";
-import {FeedbackModel} from "../feedback/FeedbackModel";
+import {FeedbackModel} from "../../models/FeedbackModel";
 import {MyAppBar} from "./myAppBar";
 import {FeedbackInput} from "./feedbackInput";
 import {SubjectsTabs} from "./subjectsTabs";
