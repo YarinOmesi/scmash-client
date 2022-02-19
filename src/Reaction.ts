@@ -1,3 +1,3 @@
 export enum Reaction{
-    Like,Dislike
+    Like,Dislike,NoReaction
 }
