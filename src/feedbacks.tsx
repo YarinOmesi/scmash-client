@@ -1,54 +1,38 @@
 import {Subject} from "./comonnents/home/home";
 import {FeedbackModel} from "./models/FeedbackModel";
 import {Reaction} from "./models/Reaction";
+import {SocketIO} from "./socketIO/events";
 
 export namespace Feedbacks {
-    type Listener = (subjects: Array<Subject>) => void
-    let subjects: Array<Subject> = [
-        {name: "logistics", feedbacks: []},
-        {name: "site", feedbacks: []},
-    ]
-    let onChangeFunction: Set<Listener> = new Set<Listener>()
+    let subjects: Map<string, Subject> = new Map<string, Subject>()
+    const socketIo = new SocketIO()
 
     export function OnSubjectsChanged(onChanged: (subjects: Array<Subject>) => void) {
-        onChangeFunction.add(onChanged)
-        onChanged(subjects)
+        socketIo.onSubjectsChanged(newSubjects => {
+            newSubjects.forEach(subject => subjects.set(subject.name,subject))
+            onChanged(Array.from(subjects.values()))
+        })
     }
 
     export function RemoveListener(onChanged: (subjects: Array<Subject>) => void) {
-        onChangeFunction.delete(onChanged)
+        console.log("Remove Listeners")
+        socketIo.removeListenerToSubjectChanged()
     }
-
 
     export function SetFeedbackReaction(newReaction: Reaction, feedback: FeedbackModel) {
-        const subject = subjects.find(s => s.name === feedback.subject)
-        if (subject === undefined) return;
-
-        const savedFeedback = subject.feedbacks.find(f=> f.id=== feedback.id)
-        if (savedFeedback === undefined) return ;
-        savedFeedback.reaction = newReaction
-
-        subjects= subjects.slice()
-        updateListeners()
+        const newFeedback = new FeedbackModel(feedback.id, feedback.subject, feedback.content, feedback.writerNickname)
+        newFeedback.reaction = newReaction
+        socketIo.upsetFeedback(newFeedback)
     }
 
-    function updateListeners() {
-        onChangeFunction.forEach(callback => callback(subjects))
-    }
 
-    let number = 0
     export function SendFeedback(feedback: { subject: string, content: string }) {
         const filledFeedback: FeedbackModel = new FeedbackModel(
-            "#"+number,
+            undefined,
             feedback.subject,
             feedback.content,
             "Nigger"
         )
-        number++;
-        const subject: (Subject | undefined) = subjects.find(value => value.name === filledFeedback.subject)
-        if (subject !== undefined) {
-            subject.feedbacks.push(filledFeedback)
-            updateListeners()
-        }
+        socketIo.upsetFeedback(filledFeedback)
     }
 }
